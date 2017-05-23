@@ -1,23 +1,29 @@
+import itertools
 import numpy as np
 
 
 class RBM:
-    def __init__(self, num_visible, num_hidden):
+    def __init__(self, num_input, num_hidden, num_output=0):
         self.num_hidden = num_hidden
-        self.num_visible = num_visible
+        self.num_visible = num_input + num_output
+        self.num_input = num_input
+        self.num_output = num_output
 
         # Initialize a weight matrix, of dimensions (num_visible x num_hidden), using
         # a Gaussian distribution with mean 0 and standard deviation 0.1.
         # "+ 1" means Insert weights for the bias units into the first row and first column.
         self.weights = 0.1 * np.random.randn(self.num_visible + 1, self.num_hidden + 1)
+        self.weights[:, 0] = 0
+        self.weights[0, :] = 0
 
-    def fit(self, data, **kwargs):
+    def fit(self, features, labels=None, **kwargs):
         """
         Train the machine.
         Parameters
         ----------
-        data: A matrix where each row is a training example consisting of the states of visible units.  
-          array-like object. (n, n_visible)
+        features: A matrix where each row is a training example consisting of the states of visible units.  
+          array-like object. (n, n_input)
+        labels: optional, array-like object (n, n_output)
         """
         flags = {
             "max_epoch": 5000,
@@ -26,10 +32,15 @@ class RBM:
         }
         flags.update(kwargs)
 
+        assert np.size(features, 1) == self.num_input
+        data = np.insert(features, 0, np.ones(1), axis=1)
         num_examples = np.size(data, 0)
+        if labels is not None:
+            assert np.size(labels, 0) == num_examples
+            assert np.size(labels, 1) == self.num_output
+            data = np.concatenate([data, labels], axis=1)
 
-        # Insert bias units of 1 into the first column.
-        data = np.insert(data, 0, np.ones(1), axis=1)
+        assert np.shape(data) == (num_examples, self.num_visible + 1)
 
         error_list = []
 
@@ -184,25 +195,26 @@ class RBM:
     def __str__(self):
         return 'num_visible: %d\nnum_hidden: %d\nweights: \n%s\n' % (self.num_visible, self.num_hidden, self.weights)
 
-    def predict(self, data) -> np.ndarray:
+    def predict(self, features) -> np.ndarray:
         """
          array-like object (n, num_visible) or (n, num_hidden)
         :return probability of this configuration
         """
-        if np.size(data, 1) == self.num_visible:
-            configuration = np.expand_dims(np.insert(self.run_visible(np.asarray(data)), 0, np.ones(1), axis=1), 1)  # n * 1 * (h + 1)
-            # print("configuration:", np.shape(configuration))
-            prob_each_unit = np.sum(configuration * np.expand_dims(self.weights, 0), axis=-1)[:, 1:]  # n * v
-        elif np.size(data, 1) == self.num_hidden:
-            configuration = np.expand_dims(np.insert(self.run_hidden(np.asarray(data)), 0, np.ones(1), axis=1), 1)  # n * (v + 1) * 1
-            prob_each_unit = np.sum(configuration * np.expand_dims(self.weights, 0), axis=-2)[:, 1:]  # n * v
-        else:
-            raise TypeError("data should be array-like object in shape of (n, num_visible) or (n, num_hidden)")
-        # print("prob_each_unit:", np.shape(prob_each_unit))
-        # print("prob_each_unit:", prob_each_unit)
-        prob = np.prod(self.sigmoid(prob_each_unit), axis=1)  # n * 1
-        # print("prob:", np.shape(prob))
-        return prob
+        assert self.num_output > 0
+        labels = np.expand_dims(np.asarray(list(itertools.product([0, 1], repeat=self.num_output))), 0)   # 1 * . * n_output
+        data = np.expand_dims(features, 1)  # n * 1 * n_input
+        # modify shape
+        data = np.tile(data, (1, np.size(labels, 1), 1))
+        labels = np.tile(labels, (np.size(data, 0), 1, 1))
+        data = np.concatenate([data, labels], axis=2)  # n * . * v
+
+        free_energy = self.free_energy(data)  # n * .
+        return labels[np.arange(np.size(data, 0)), np.argmin(free_energy, axis=1), :]
+
+    def free_energy(self, visible: np.ndarray) -> np.ndarray:
+        data = np.insert(visible, 0, np.ones(1), axis=-1)  # * (v + 1)
+        x = np.squeeze(np.expand_dims(data, -2) @ self.weights, axis=-2)  # n * (h + 1)
+        return - np.sum(data[..., 1:] * self.weights[1:, 0], axis=-1) - np.sum(np.log(1 + np.exp(x)), axis=-1)
 
     @staticmethod
     def sigmoid(x: np.ndarray) -> np.ndarray:
@@ -214,7 +226,7 @@ if __name__ == '__main__':
     import time
     tic = time.time()
 
-    r = RBM(num_visible=6, num_hidden=2)
+    r = RBM(num_input=6, num_hidden=2)
     training_data = np.array(
         [[1, 1, 1, 0, 0, 0], [1, 0, 1, 0, 0, 0], [1, 1, 1, 0, 0, 0], [0, 0, 1, 1, 1, 0], [0, 0, 1, 1, 0, 0],
          [0, 0, 1, 1, 1, 0]])
