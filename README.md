@@ -8,4 +8,5 @@ RBM's implementation is based on [echen's code](https://github.com/echen/restric
 
 ## Run
 
-......
+``` bash
+python3 run.py
