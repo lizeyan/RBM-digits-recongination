@@ -1,3 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 
 .idea/
+GIVEN_TRAIN_DATA/
+__pycache__/
