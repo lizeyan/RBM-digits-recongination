@@ -1,6 +1,9 @@
 import re
 import os
 import shutil
+from run import read_data
+import numpy as np
+from PIL import Image
 
 
 def rename_given_data_by_label(path_to_input, path_to_output):
@@ -44,6 +47,20 @@ def rename_given_data_by_label(path_to_input, path_to_output):
         elif os.path.isdir(full_path):
             rename_given_data_by_label(full_path, path_to_output)
 
+
+def clean_repeated_train_data(path_train, path_test):
+    size = (32, 32)
+    test_data, _ = read_data(path_test, size)
+    for filename in os.listdir(path_train):
+        fullpath = os.path.join(path_train, filename)
+        arr = np.asarray(Image.open(fullpath).convert("L").resize(size))
+        same = np.count_nonzero(np.sum(np.abs(test_data - np.expand_dims(arr, 0)), axis=(-2, -1)) == 0)
+        if same != 0:
+            os.remove(fullpath)
+            print("remove:", fullpath)
+
+
 if __name__ == '__main__':
     idx = 0
-    rename_given_data_by_label("GIVEN_TRAIN_DATA", "TRAIN")
+    # rename_given_data_by_label("GIVEN_TRAIN_DATA", "TRAIN")
+    # clean_repeated_train_data("TRAIN", "TEST")
