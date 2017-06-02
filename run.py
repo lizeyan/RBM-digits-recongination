@@ -114,7 +114,9 @@ def main():
     log("test data shape:", flatten_test_data.shape)
     log("test label shape:", test_label.shape)
 
-    evaluate(fit_and_predict(linear_model.PassiveAggressiveClassifier(random_state=3), flatten_train_data, train_label, flatten_test_data), test_label, "Passive Aggressor Classifier", )
+    evaluate(fit_and_predict(linear_model.LogisticRegression(C=100.0), flatten_train_data, train_label, flatten_test_data), test_label, "Logistic Regression", )
+
+    # evaluate(fit_and_predict(linear_model.PassiveAggressiveClassifier(random_state=3), flatten_train_data, train_label, flatten_test_data), test_label, "Passive Aggressor Classifier", )
 
     # evaluate(fit_and_predict(svm.LinearSVR(C=1.0, epsilon=0), flatten_train_data, train_label, flatten_test_data), test_label, "linear SVR", )
 
@@ -130,10 +132,9 @@ def main():
 
     # evaluate(fit_and_predict(linear_model.SGDClassifier(n_iter=200, shuffle=True, n_jobs=4), flatten_train_data, train_label, flatten_test_data), test_label, "SGD Classifier")
 
-    rbm = neural_network.BernoulliRBM(n_components=256, learning_rate=0.1, verbose=True, n_iter=10)
-    pac = linear_model.PassiveAggressiveClassifier(random_state=3)
-    evaluate(fit_and_predict(pipeline.Pipeline([("rbm", rbm), ("pac", pac)]), flatten_train_data, train_label, flatten_test_data), test_label, "RBM-PA Classifier")
-    plot_rbm_features(rbm)
+    rbm = neural_network.BernoulliRBM(n_components=1024, learning_rate=0.06, verbose=True, n_iter=10)
+    evaluate(fit_and_predict(pipeline.Pipeline([("rbm", rbm), ("supervised", linear_model.LogisticRegression(C=100.0))]), flatten_train_data, train_label, flatten_test_data), test_label, "RBM-PA Classifier")
+    # plot_rbm_features(rbm)
 
     # rbm = neural_network.BernoulliRBM(n_components=1024, learning_rate=0.05, verbose=True, n_iter=100)
     # mlp = neural_network.MLPClassifier(hidden_layer_sizes=(512, ), verbose=True)
