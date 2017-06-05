@@ -1,7 +1,7 @@
 import re
 import os
 import shutil
-from run import read_data
+from run_rbm2supervised import read_data
 import numpy as np
 from PIL import Image
 
@@ -63,4 +63,4 @@ def clean_repeated_train_data(path_train, path_test):
 if __name__ == '__main__':
     idx = 0
     # rename_given_data_by_label("GIVEN_TRAIN_DATA", "TRAIN")
-    # clean_repeated_train_data("TRAIN", "TEST")
+    clean_repeated_train_data("TRAIN", "TEST")

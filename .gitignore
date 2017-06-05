@@ -2,4 +2,5 @@
 
 .idea/
 GIVEN_TRAIN_DATA/
+PREPROCESSED/
 __pycache__/
