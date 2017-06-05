@@ -111,7 +111,6 @@ def main():
     rbm.fit(flatten_test_data)
     transformed_train_data = rbm.transform(flatten_train_data)
     transformed_test_data = rbm.transform(flatten_test_data)
-    print(transformed_train_data.shape, transformed_test_data.shape)
 
     ####################################################################################################################
     # RBM->SVC
