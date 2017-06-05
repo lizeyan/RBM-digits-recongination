@@ -104,9 +104,9 @@ def main():
     # evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=512000, cache_size=4096), test_label, "RBM-SVC Classifier")
     # evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=3000.0), test_label, "RBM-Logistic Classifier")
 
-    transformed_size = (32, 32, 1)
+    transformed_size = (64, 64, 1)
     # rbm = neural_network.BernoulliRBM(n_components=transformed_size[0] * transformed_size[1], learning_rate=0.001, verbose=True, n_iter=10, random_state=0)
-    rbm = BinaryRBM(n_hidden_units=transformed_size[0] * transformed_size[1], activation_function="relu", n_epochs=10, batch_size=32, optimization_algorithm="adam", learning_rate=1e-3)
+    rbm = BinaryRBM(n_hidden_units=transformed_size[0] * transformed_size[1], activation_function="relu", n_epochs=100, batch_size=32, optimization_algorithm="sgd", learning_rate=1e-3)
     rbm.fit(flatten_train_data)
     rbm.fit(flatten_test_data)
     transformed_train_data = rbm.transform(flatten_train_data)
