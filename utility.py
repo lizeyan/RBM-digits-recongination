@@ -84,7 +84,7 @@ def read_data(path: str, size):
         if match:
             image = Image.open(os.path.join(path, filename)).convert("L").resize(size)
             _ = image_preprocess(np.asarray(image))
-            # Image.fromarray((_ * 255).astype(np.uint8)).save(os.path.join("PREPROCESSED", filename))
+            Image.fromarray((_ * 255).astype(np.uint8)).save(os.path.join("PREPROCESSED", filename))
             data_list.append(_)
             label_list.append(int(match.group("digit")))
         else:

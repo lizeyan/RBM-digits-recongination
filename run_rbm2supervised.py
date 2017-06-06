@@ -73,21 +73,21 @@ def main():
     ####################################################################################################################
     # Simple and Direct Models
     ####################################################################################################################
-    evaluate(fit_and_predict(linear_model.LogisticRegression, flatten_train_data, train_label, flatten_test_data, C=100.0), test_label, "Logistic Regression", )
+    evaluate(fit_and_predict(linear_model.LogisticRegression, flatten_train_data, train_label, flatten_test_data, C=4.0), test_label, "Logistic Regression", )
 
-    evaluate(fit_and_predict(linear_model.PassiveAggressiveClassifier, flatten_train_data, train_label, flatten_test_data), test_label, "Passive Aggressor Classifier", C=0.8)
+    evaluate(fit_and_predict(linear_model.PassiveAggressiveClassifier, flatten_train_data, train_label, flatten_test_data, C=0.8), test_label, "Passive Aggressor Classifier")
 
-    evaluate(fit_and_predict(svm.LinearSVR, flatten_train_data, train_label, flatten_test_data), test_label, "linear SVR", C=1.0, epsilon=0)
+    evaluate(fit_and_predict(svm.LinearSVR, flatten_train_data, train_label, flatten_test_data, C=1.0, epsilon=0), test_label, "linear SVR")
 
-    evaluate(fit_and_predict(ensemble.RandomForestClassifier, flatten_train_data, train_label, flatten_test_data), test_label, "random forest", n_jobs=20, n_estimators=100, max_depth=38)
+    evaluate(fit_and_predict(ensemble.RandomForestClassifier, flatten_train_data, train_label, flatten_test_data, n_jobs=20, n_estimators=100, max_depth=38), test_label, "random forest")
 
-    evaluate(fit_and_predict(tree.DecisionTreeClassifier, flatten_train_data, train_label, flatten_test_data), test_label, "decision tree", max_depth=37)
+    evaluate(fit_and_predict(tree.DecisionTreeClassifier, flatten_train_data, train_label, flatten_test_data, max_depth=37), test_label, "decision tree")
 
-    evaluate(fit_and_predict(neighbors.KNeighborsClassifier, flatten_train_data, train_label, flatten_test_data), test_label, "knn", n_neighbors=1)
+    evaluate(fit_and_predict(neighbors.KNeighborsClassifier, flatten_train_data, train_label, flatten_test_data, n_neighbors=1), test_label, "knn")
 
-    evaluate(fit_and_predict(ensemble.AdaBoostClassifier, flatten_train_data, train_label, flatten_test_data), test_label, "adaboost", n_estimators=100)
+    evaluate(fit_and_predict(ensemble.AdaBoostClassifier, flatten_train_data, train_label, flatten_test_data, n_estimators=100), test_label, "adaboost")
 
-    evaluate(fit_and_predict(linear_model.SGDClassifier, flatten_train_data, train_label, flatten_test_data), test_label, "SGD Classifier", n_iter=200, shuffle=True, n_jobs=20)
+    evaluate(fit_and_predict(linear_model.SGDClassifier, flatten_train_data, train_label, flatten_test_data, n_iter=200, shuffle=True, n_jobs=20), test_label, "SGD Classifier")
 
     evaluate(fit_and_predict(svm.SVC, flatten_train_data, train_label, flatten_test_data, C=8000.0, kernel="rbf", max_iter=-1, cache_size=4096), test_label, "SVC Classifier")
 
