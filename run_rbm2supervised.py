@@ -73,23 +73,23 @@ def main():
     ####################################################################################################################
     # Simple and Direct Models
     ####################################################################################################################
-    evaluate(fit_and_predict(linear_model.LogisticRegression, flatten_train_data, train_label, flatten_test_data, C=4.0), test_label, "Logistic Regression", )
+    # evaluate(fit_and_predict(linear_model.LogisticRegression, flatten_train_data, train_label, flatten_test_data, C=4.0), test_label, "Logistic Regression", )
 
-    evaluate(fit_and_predict(linear_model.PassiveAggressiveClassifier, flatten_train_data, train_label, flatten_test_data, C=0.8), test_label, "Passive Aggressor Classifier")
+    # evaluate(fit_and_predict(linear_model.PassiveAggressiveClassifier, flatten_train_data, train_label, flatten_test_data, C=0.8), test_label, "Passive Aggressor Classifier")
 
-    evaluate(fit_and_predict(svm.LinearSVR, flatten_train_data, train_label, flatten_test_data, C=1.0, epsilon=0), test_label, "linear SVR")
+    # evaluate(fit_and_predict(svm.LinearSVR, flatten_train_data, train_label, flatten_test_data, C=1.0, epsilon=0), test_label, "linear SVR")
 
-    evaluate(fit_and_predict(ensemble.RandomForestClassifier, flatten_train_data, train_label, flatten_test_data, n_jobs=20, n_estimators=100, max_depth=38), test_label, "random forest")
+    # evaluate(fit_and_predict(ensemble.RandomForestClassifier, flatten_train_data, train_label, flatten_test_data, n_jobs=20, n_estimators=100, max_depth=38), test_label, "random forest")
 
-    evaluate(fit_and_predict(tree.DecisionTreeClassifier, flatten_train_data, train_label, flatten_test_data, max_depth=37), test_label, "decision tree")
+    # evaluate(fit_and_predict(tree.DecisionTreeClassifier, flatten_train_data, train_label, flatten_test_data, max_depth=37), test_label, "decision tree")
 
-    evaluate(fit_and_predict(neighbors.KNeighborsClassifier, flatten_train_data, train_label, flatten_test_data, n_neighbors=1), test_label, "knn")
+    # evaluate(fit_and_predict(neighbors.KNeighborsClassifier, flatten_train_data, train_label, flatten_test_data, n_neighbors=1), test_label, "knn")
 
-    evaluate(fit_and_predict(ensemble.AdaBoostClassifier, flatten_train_data, train_label, flatten_test_data, n_estimators=100), test_label, "adaboost")
+    # evaluate(fit_and_predict(ensemble.AdaBoostClassifier, flatten_train_data, train_label, flatten_test_data, n_estimators=100), test_label, "adaboost")
 
-    evaluate(fit_and_predict(linear_model.SGDClassifier, flatten_train_data, train_label, flatten_test_data, n_iter=200, shuffle=True, n_jobs=20), test_label, "SGD Classifier")
+    # evaluate(fit_and_predict(linear_model.SGDClassifier, flatten_train_data, train_label, flatten_test_data, n_iter=200, shuffle=True, n_jobs=20), test_label, "SGD Classifier")
 
-    evaluate(fit_and_predict(svm.SVC, flatten_train_data, train_label, flatten_test_data, C=8000.0, kernel="rbf", max_iter=-1, cache_size=4096), test_label, "SVC Classifier")
+    # evaluate(fit_and_predict(svm.SVC, flatten_train_data, train_label, flatten_test_data, C=8000.0, kernel="rbf", max_iter=-1, cache_size=4096), test_label, "SVC Classifier")
 
     ####################################################################################################################
     # RBM -> Supervised Models
@@ -103,9 +103,10 @@ def main():
     # evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=512000, cache_size=4096), test_label, "RBM-SVC Classifier")
     # evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=3000.0), test_label, "RBM-Logistic Classifier")
 
-    transformed_size = (32 * 4, 32 * 4, 1)
-    # rbm = neural_network.BernoulliRBM(n_components=transformed_size[0] * transformed_size[1], learning_rate=0.001, verbose=True, n_iter=10, random_state=0)
-    rbm = BinaryRBM(n_hidden_units=transformed_size[0] * transformed_size[1], activation_function="relu", n_epochs=100, batch_size=32, optimization_algorithm="sgd", learning_rate=1e-3)
+    transformed_size = (8, 8, 1)
+    rbm1 = BinaryRBM(n_hidden_units=16 * 16, activation_function="relu", n_epochs=100, batch_size=32, optimization_algorithm="sgd", learning_rate=1e-3)
+    rbm2 = BinaryRBM(n_hidden_units=transformed_size[0] * transformed_size[1], activation_function="relu", n_epochs=100, batch_size=32, optimization_algorithm="sgd", learning_rate=1e-3)
+    rbm = pipeline.Pipeline([('rbm1', rbm1), ('rbm2', rbm2)])
     rbm.fit(flatten_train_data)
     rbm.fit(flatten_test_data)
     transformed_train_data = rbm.transform(flatten_train_data)

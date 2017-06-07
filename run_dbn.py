@@ -23,7 +23,7 @@ def main():
     expanded_train_data = np.expand_dims(flatten_train_data.reshape((-1,) + IMAGE_SIZE), -1)
     expanded_test_data = np.expand_dims(flatten_test_data.reshape((-1, ) + IMAGE_SIZE), -1)
 
-    dbn = SupervisedDBNClassification(hidden_layers_structure=[4096, 4096], learning_rate_rbm=0.0001, learning_rate=0.001, n_epochs_rbm=200, n_iter_backprop=10000, batch_size=32, activation_function='relu', dropout_p=0.2)
+    dbn = SupervisedDBNClassification(hidden_layers_structure=[128, 64], learning_rate_rbm=0.001, learning_rate=0.001, n_epochs_rbm=20, n_iter_backprop=10000, batch_size=32, activation_function='relu', dropout_p=0.2)
     dbn.fit(flatten_train_data, train_label)
     evaluate(np.asarray(list(dbn.predict(flatten_test_data))), test_label, "DBN")
 
