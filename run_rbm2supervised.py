@@ -113,17 +113,38 @@ def main():
     ####################################################################################################################
     # RBM->SVC
     ####################################################################################################################
-    evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=128000, cache_size=4096), test_label, "RBM-SVC Classifier")
+    evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=10, cache_size=4096 * 4), test_label, "RBM-SVC Classifier")
+    evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=100, cache_size=4096 * 4), test_label, "RBM-SVC Classifier")
+    evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=1000, cache_size=4096 * 4), test_label, "RBM-SVC Classifier")
+    evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=10000, cache_size=4096 * 4), test_label, "RBM-SVC Classifier")
+    evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=128000, cache_size=4096 * 4), test_label, "RBM-SVC Classifier")
+    evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=256000, cache_size=4096 * 4), test_label, "RBM-SVC Classifier")
+    evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=512000, cache_size=4096 * 4), test_label, "RBM-SVC Classifier")
+    evaluate(fit_and_predict(svm.SVC, transformed_train_data, train_label, transformed_test_data, C=1024000, cache_size=4096 * 4), test_label, "RBM-SVC Classifier")
 
     ####################################################################################################################
     # RBM->Logistic
     ####################################################################################################################
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=1.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=4.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=8.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=16.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=32.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=64.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=128.0), test_label, "RBM-Logistic Classifier")
     evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=400.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=800.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=1600.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=3200.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=6400.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=12800.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=25600.0), test_label, "RBM-Logistic Classifier")
+    evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=51200.0), test_label, "RBM-Logistic Classifier")
 
     ####################################################################################################################
     # RBM->RandomForest
     ####################################################################################################################
-    evaluate(fit_and_predict(ensemble.RandomForestClassifier, transformed_train_data, train_label, transformed_test_data, n_estimators=800, max_depth=32), test_label, "RBM-random Forest Classifier")
+    # evaluate(fit_and_predict(ensemble.RandomForestClassifier, transformed_train_data, train_label, transformed_test_data, n_estimators=800, max_depth=32), test_label, "RBM-random Forest Classifier")
 
     transformed_train_data = transformed_train_data.reshape((-1, ) + transformed_size)
     transformed_test_data = transformed_test_data.reshape((-1, ) + transformed_size)
