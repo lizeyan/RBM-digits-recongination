@@ -104,7 +104,7 @@ def main():
     # evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=3000.0), test_label, "RBM-Logistic Classifier")
 
     transformed_size = (8, 8, 1)
-    rbm = BinaryRBM(n_hidden_units=transformed_size[0] * transformed_size[1], activation_function="relu", n_epochs=100, batch_size=32, optimization_algorithm="sgd", learning_rate=1e-3)
+    rbm = BinaryRBM(n_hidden_units=transformed_size[0] * transformed_size[1], activation_function="relu", n_epochs=1000, batch_size=32, optimization_algorithm="sgd", learning_rate=1e-3)
     rbm.fit(flatten_train_data)
     rbm.fit(flatten_test_data)
     transformed_train_data = rbm.transform(flatten_train_data)
