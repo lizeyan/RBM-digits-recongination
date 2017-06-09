@@ -67,7 +67,7 @@ def quantization(arr: np.ndarray, step: int=8) -> np.ndarray:
 
 
 def image_preprocess(arr: np.ndarray) -> np.ndarray:
-    return restoration.denoise_tv_chambolle(quantization(arr, 16), weight=0.1)
+    return restoration.denoise_tv_chambolle(quantization(arr, 4), weight=0.1)
     # return gaussian_filter(arr, sigma=0.5)
     # return restoration.denoise_wavelet(arr)
     # return restoration.denoise_bilateral(arr, sigma_color=0.05, sigma_spatial=15, multichannel=False)
