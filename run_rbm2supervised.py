@@ -1,11 +1,9 @@
-from matplotlib import pyplot as plt
 import numpy as np
 from utility import *
 import re
 import os
 from PIL import Image
 from sklearn import neural_network, linear_model, pipeline, metrics, ensemble, tree, neighbors, svm
-from numba import jit
 import keras
 from dbn.tensorflow import BinaryRBM
 
@@ -104,7 +102,7 @@ def main():
     # evaluate(fit_and_predict(linear_model.LogisticRegression, transformed_train_data, train_label, transformed_test_data, C=3000.0), test_label, "RBM-Logistic Classifier")
 
     transformed_size = (32, 32, 1)
-    rbm = BinaryRBM(n_hidden_units=transformed_size[0] * transformed_size[1], activation_function="relu", n_epochs=1000, batch_size=128, optimization_algorithm="sgd", learning_rate=5e-4)
+    rbm = BinaryRBM(n_hidden_units=transformed_size[0] * transformed_size[1], activation_function="relu", n_epochs=500, batch_size=128, optimization_algorithm="sgd", learning_rate=5e-4)
     rbm.fit(flatten_train_data)
     rbm.fit(flatten_test_data)
     transformed_train_data = rbm.transform(flatten_train_data)

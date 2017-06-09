@@ -1,6 +1,5 @@
 import time
 from datetime import datetime
-import numba as nb
 import os
 import numpy as np
 from matplotlib import pyplot as plt
